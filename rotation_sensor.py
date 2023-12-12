@@ -9,7 +9,7 @@ power_mgmt_1 = 0x6b
 power_mgmt_2 = 0x6c
 
 
-def init_gyro():
+def gyro_init():
 	bus = smbus.SMBus(1)  # bus = smbus.SMBus(0) fuer Revision 1
 	address = 0x68  # via i2cdetect
 	# Aktivieren, um das Modul ansprechen zu koennen
@@ -25,7 +25,7 @@ def get_rotation_angle(angle, step):
 	rotation = 0
 	while rotation <= angle:
 		gyroskop_zout = read_word_2c(0x47) / 131
-		#writer.writerow([time.time(),gyroskop_zout])
+		writer.writerow([time.time(),gyroskop_zout])
 		rotation += gyroskop_zout * step
 		time.sleep(step)
 	
