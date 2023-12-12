@@ -1,0 +1,9 @@
+RaspPi - SLAM Projekt:
+
+Fahrzeug: 
+kettenfahrzeug-tp101
+https://funduinoshop.com/diy-werkstatt/bausaetze/chassis/stabiles-tank-chassis/kettenfahrzeug-tp101/roboter-kit-mit-12v-motoren-fuer-arduino-geeignet
+
+Beschleunigungssensor: 
+MPU 6050
+https://tutorials-raspberrypi.de/rotation-und-beschleunigung-mit-dem-raspberry-pi-messen/
