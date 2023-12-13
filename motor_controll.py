@@ -78,19 +78,22 @@ def backward(seconds):
 	GPIO.output(in3,GPIO.LOW)
 	GPIO.output(in4,GPIO.LOW)
 
-def spin(angle):
+def spin(angle, step):
 	p1.start(85)
 	p2.start(85)
+	#Set Motors to spin
 	GPIO.output(in1,GPIO.HIGH)
 	GPIO.output(in2,GPIO.LOW)
 	GPIO.output(in3,GPIO.HIGH)
 	GPIO.output(in4,GPIO.LOW)
-	angle_out = get_rotation_angle(angle, 0.05)
+	[rotation, time_plot, gyro_out_plot, rotation_plot] = get_rotation_angle(angle, step)
+	#Set Motors to off
 	GPIO.output(in1,GPIO.LOW)
 	GPIO.output(in2,GPIO.LOW)
 	GPIO.output(in3,GPIO.LOW)
 	GPIO.output(in4,GPIO.LOW)
-	writer.writerow(["Rotation aim",angle,"messured Angle",angle_out])
+	#writer.writerow(["Rotation aim",angle,"messured Angle",angle_out])
+	return [time_plot, gyro_out_plot, rotation_plot]
 	
 def spin_reverse(seconds):
 	p1.start(80)
