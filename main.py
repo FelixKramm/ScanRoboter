@@ -2,20 +2,41 @@ from distance import *
 from motor_controll import *
 from rotation_sensor import *
 from plotter import *
+from random import random
+from servo import *
 
 
 motor_init()
+servo_left(0)
+[dis_1, dis_2] = get_distance()
+time.sleep(1)
+print([dis_2])
+servo_right(0)
+[dis_1, dis_2] = get_distance()
+time.sleep(1)
+print([dis_1])
+servo_left(180)
+[dis_1, dis_2] = get_distance()
+time.sleep(1)
+print([dis_2])
+servo_right(180)
+[dis_1, dis_2] = get_distance()
+print([dis_1])
 
-time.sleep(8)
-[time_plot1, gyro_out_plot1, rotation_plot1] = spin(360, 0.2)
+	
+
+
+
+
+
+
 #time.sleep(2)
-#[time_plot2, gyro_out_plot2, rotation_plot2] = spin(360, 0.05)
-#time.sleep(2)
-#[time_plot3, gyro_out_plot3, rotation_plot3] = spin(360, 0.02)
-#time.sleep(2)
-#[time_plot4, gyro_out_plot4, rotation_plot4] = spin(360, 0.01)
-plot_rotation(time_plot1, gyro_out_plot1, rotation_plot1)
-#plot_rotation(time_plot2, gyro_out_plot2, rotation_plot2)
-#plot_rotation(time_plot3, gyro_out_plot3, rotation_plot3)
-#plot_rotation(time_plot4, gyro_out_plot4, rotation_plot4)
-#test
+#[time_plot1, gyro_out_plot1, rotation_plot1, x, y, z] = spin(720)
+
+#[dis_1, dis_2] = get_distance()
+#print([dis_1, dis_2])
+
+
+#plot_rotation(time_plot1, gyro_out_plot1, rotation_plot1, x,y,z)
+
+

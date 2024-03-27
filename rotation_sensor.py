@@ -165,12 +165,12 @@ class mpu6050:
         z = z / accel_scale_modifier
 
         if g is True:
-            return {'x': x, 'y': y, 'z': z}
+            return [x,y,z]
         elif g is False:
             x = x * self.GRAVITIY_MS2
             y = y * self.GRAVITIY_MS2
             z = z * self.GRAVITIY_MS2
-            return {'x': x, 'y': y, 'z': z}
+            return [x,y,z]
 
     def set_gyro_range(self, gyro_range):
         """Sets the range of the gyroscope to range.
@@ -266,19 +266,27 @@ def get_rotation_angle(angle, step):
 	
 	# Calulate the angle with discrete integration
 	rotation = 0
+	offset = 17 #deg/sec sensor Fehler
 	start_time = time.time()
 	time_plot = []
+	x_accel = []
+	y_accel = []
+	z_accel = []
 	gyro_out_plot = []
 	rotation_plot = []
 	while rotation <= angle:
-		gyroskop_zout = mpu.get_gyro_data()
+		gyroskop_zout = abs(mpu.get_gyro_data())+offset
 		time_plot.append(time.time()-start_time)
 		gyro_out_plot.append(gyroskop_zout)
 		rotation += gyroskop_zout * step
 		rotation_plot.append(rotation)
+		[x,y,z] = mpu.get_accel_data()
+		x_accel.append(x)
+		y_accel.append(y)
+		z_accel.append(y)
 		time.sleep(step)
 	
-	return [rotation, time_plot, gyro_out_plot, rotation_plot]
+	return [rotation, time_plot, gyro_out_plot, rotation_plot, x_accel, y_accel, z_accel]
 	
 
 

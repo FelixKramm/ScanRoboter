@@ -19,7 +19,7 @@ GPIO.setup(GPIO_ECHO_1, GPIO.IN)
 GPIO.setup(GPIO_TRIGGER_2, GPIO.OUT)
 GPIO.setup(GPIO_ECHO_2, GPIO.IN)
  
-def distanz():
+def get_distance():
     distanz = [0, 0]
     ### Sensor 1 ###
     # setze Trigger auf HIGH
