@@ -12,7 +12,7 @@ powerlevel = 100
 #integrations_step
 step = 0.05
 
-#Motor 1
+#Motor 1 - Rechts
 in1 = 15
 in2 = 18
 enA = 14
@@ -26,7 +26,7 @@ GPIO.output(in1,GPIO.LOW)
 GPIO.output(in2,GPIO.LOW)
 p1=GPIO.PWM(enA,1000)
 
-#Motor 2
+#Motor 2 - Links
 in3 = 23
 in4 = 24
 enB = 25
@@ -60,7 +60,7 @@ def motor_init():
 	
 def forward(seconds):
 	p1.start(80)
-	p2.start(80)
+	p2.start(77)
 	GPIO.output(in1,GPIO.HIGH)
 	GPIO.output(in2,GPIO.LOW)
 	GPIO.output(in4,GPIO.HIGH)
@@ -121,7 +121,9 @@ def spin_reverse(angle, step):
 	return [time_plot, gyro_out_plot, rotation_plot]
 
 
-
+def forward_meter(meter):
+	factor = 0.34 #m/s
+	forward(meter/factor)
 
 
 ### Start Test ###

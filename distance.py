@@ -1,6 +1,8 @@
 #Bibliotheken einbinden
 import RPi.GPIO as GPIO
 import time
+import math
+from servo import *
  
 #GPIO Modus (BOARD / BCM)
 GPIO.setwarnings(False)
@@ -68,11 +70,47 @@ def get_distance():
     distanz[1] = (TimeElapsed * 34300) / 2
  
     return distanz
+    
+    
+def get_obj_position(ego):
+    offset_sensor_1 = [0.12,0]
+    offset_sensor_2 = [-0.12, 0]
+    angles_to_check = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180]
+    #angles_to_check = [90]
+    objects_positions = []
+    
+    for angle in angles_to_check:
+        servo_right(angle)
+        servo_left(angle)
+        [dis_sen1_1, dis_sen2_1] = get_distance()
+        [dis_sen1_2, dis_sen2_2] = get_distance()
+        [dis_sen1_3, dis_sen2_3] = get_distance()
+        dis_sen1 = (dis_sen1_1 + dis_sen1_2 + dis_sen1_3)/3
+        dis_sen2 = (dis_sen2_1 + dis_sen2_2 + dis_sen2_3)/3
+        if dis_sen1*0.01 <= 3:
+            #Sensor 1 - R
+            x_sen1 = math.sin(math.radians(angle))*dis_sen1*0.01 + offset_sensor_1[0]+ego[0]
+            y_sen1 = math.cos(math.radians(angle))*dis_sen1*0.01 + offset_sensor_1[1]+ego[1]
+            objects_positions.append([round(x_sen1,2), round(y_sen1,2)])
+        
+        if dis_sen2*0.01 <= 3:
+            #Sensor 2 - L
+            x_sen2 = -1*math.sin(math.radians(angle))*dis_sen2*0.01 + offset_sensor_2[0]+ego[0]
+            y_sen2 = math.cos(math.radians(angle))*dis_sen2*0.01 + offset_sensor_2[1]+ego[1]
+            objects_positions.append([round(x_sen2,2), round(y_sen2,2)])
+            
+        time.sleep(0.25)
+    return objects_positions
+    
+        
+        
+        
+    
  
 if __name__ == '__main__':
     try:
         while True:
-            abstand = distanz()
+            abstand = get_distance()
             print ("Entfernung1 = %.1f cm" % abstand[0])
             print ("Entfernung2 = %.1f cm" % abstand[1])
             time.sleep(1)
