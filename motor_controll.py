@@ -92,7 +92,7 @@ def spin(angle):
 	GPIO.output(in2,GPIO.LOW)
 	GPIO.output(in3,GPIO.HIGH)
 	GPIO.output(in4,GPIO.LOW)
-	#time.sleep(2)
+	time.sleep(10)
 	GPIO.output(led, GPIO.HIGH)
 	[rotation, time_plot, gyro_out_plot, rotation_plot, x, y, z] = get_rotation_angle(angle, step)
 	#Set Motors to off

@@ -3,8 +3,8 @@ import math
 import time
 import csv
 
-class mpu6050:
 
+class mpu6050:
     # Global Variables
     GRAVITIY_MS2 = 9.80665
     address = None
@@ -32,13 +32,13 @@ class mpu6050:
     GYRO_RANGE_1000DEG = 0x10
     GYRO_RANGE_2000DEG = 0x18
 
-    FILTER_BW_256=0x00
-    FILTER_BW_188=0x01
-    FILTER_BW_98=0x02
-    FILTER_BW_42=0x03
-    FILTER_BW_20=0x04
-    FILTER_BW_10=0x05
-    FILTER_BW_5=0x06
+    FILTER_BW_256 = 0x00
+    FILTER_BW_188 = 0x01
+    FILTER_BW_98 = 0x02
+    FILTER_BW_42 = 0x03
+    FILTER_BW_20 = 0x04
+    FILTER_BW_10 = 0x05
+    FILTER_BW_5 = 0x06
 
     # MPU-6050 Registers
     PWR_MGMT_1 = 0x6B
@@ -110,7 +110,7 @@ class mpu6050:
         # Write the new range to the ACCEL_CONFIG register
         self.bus.write_byte_data(self.address, self.ACCEL_CONFIG, accel_range)
 
-    def read_accel_range(self, raw = False):
+    def read_accel_range(self, raw=False):
         """Reads the range the accelerometer is set to.
 
         If raw is True, it will return the raw value from the ACCEL_CONFIG
@@ -134,7 +134,7 @@ class mpu6050:
             else:
                 return -1
 
-    def get_accel_data(self, g = False):
+    def get_accel_data(self, g=False):
         """Gets and returns the X, Y and Z values from the accelerometer.
 
         If g is True, it will return the data in g
@@ -165,12 +165,12 @@ class mpu6050:
         z = z / accel_scale_modifier
 
         if g is True:
-            return [x,y,z]
+            return [x, y, z]
         elif g is False:
             x = x * self.GRAVITIY_MS2
             y = y * self.GRAVITIY_MS2
             z = z * self.GRAVITIY_MS2
-            return [x,y,z]
+            return [x, y, z]
 
     def set_gyro_range(self, gyro_range):
         """Sets the range of the gyroscope to range.
@@ -188,10 +188,9 @@ class mpu6050:
         """Sets the low-pass bandpass filter frequency"""
         # Keep the current EXT_SYNC_SET configuration in bits 3, 4, 5 in the MPU_CONFIG register
         EXT_SYNC_SET = self.bus.read_byte_data(self.address, self.MPU_CONFIG) & 0b00111000
-        return self.bus.write_byte_data(self.address, self.MPU_CONFIG,  EXT_SYNC_SET | filter_range)
+        return self.bus.write_byte_data(self.address, self.MPU_CONFIG, EXT_SYNC_SET | filter_range)
 
-
-    def read_gyro_range(self, raw = False):
+    def read_gyro_range(self, raw=False):
         """Reads the range the gyroscope is set to.
 
         If raw is True, it will return the raw value from the GYRO_CONFIG
@@ -254,39 +253,34 @@ class mpu6050:
         return [accel, gyro, temp]
 
 
-	
-	
 def get_rotation_angle(angle, step):
-	# Init gyro
-	mpu = mpu6050(0x68)
-	print(['Temperatur: ', mpu.get_temp()])
-	mpu.set_gyro_range(0x00)
-	print(['Range in Grad/sek: ', mpu.read_gyro_range()])
-	mpu.set_filter_range()
-	
-	# Calulate the angle with discrete integration
-	rotation = 0
-	offset = 17 #deg/sec sensor Fehler
-	start_time = time.time()
-	time_plot = []
-	x_accel = []
-	y_accel = []
-	z_accel = []
-	gyro_out_plot = []
-	rotation_plot = []
-	while rotation <= angle:
-		gyroskop_zout = abs(mpu.get_gyro_data())+offset
-		time_plot.append(time.time()-start_time)
-		gyro_out_plot.append(gyroskop_zout)
-		rotation += gyroskop_zout * step
-		rotation_plot.append(rotation)
-		[x,y,z] = mpu.get_accel_data()
-		x_accel.append(x)
-		y_accel.append(y)
-		z_accel.append(y)
-		time.sleep(step)
-	
-	return [rotation, time_plot, gyro_out_plot, rotation_plot, x_accel, y_accel, z_accel]
-	
+    # Init gyro
+    mpu = mpu6050(0x68)
+    print(['Temperatur: ', mpu.get_temp()])
+    mpu.set_gyro_range(0x00)
+    print(['Range in Grad/sek: ', mpu.read_gyro_range()])
+    mpu.set_filter_range()
 
+    # Calulate the angle with discrete integration
+    rotation = 0
+    offset = 0  # 17   deg/sec sensor Fehler
+    start_time = time.time()
+    time_plot = []
+    x_accel = []
+    y_accel = []
+    z_accel = []
+    gyro_out_plot = []
+    rotation_plot = []
+    while rotation <= angle:
+        gyroskop_zout = abs(mpu.get_gyro_data()) + offset
+        time_plot.append(time.time() - start_time)
+        gyro_out_plot.append(gyroskop_zout)
+        rotation += gyroskop_zout * step
+        rotation_plot.append(rotation)
+        [x, y, z] = mpu.get_accel_data()
+        x_accel.append(x)
+        y_accel.append(y)
+        z_accel.append(y)
+        time.sleep(step)
 
+    return [rotation, time_plot, gyro_out_plot, rotation_plot, x_accel, y_accel, z_accel]
